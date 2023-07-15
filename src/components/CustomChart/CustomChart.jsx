@@ -23,6 +23,7 @@ import {
   optionsDonut,
   optionsRadar,
 } from "./utils/options";
+import dataset from "./utils/dataset";
 
 // Contruimos la grafica
 ChartJS.register(
@@ -47,51 +48,35 @@ const CustomChart = ({ data }) => {
     return null;
   }
   const { included } = data;
-
   const contents = included.map((item) => item.type);
-
-  // Extraemos el array de contenidos y eliminamos el total
-  const labels = included[selectedContentIndex].attributes.content
-    .filter((item) => item.attributes.composite !== true)
-    .map((item) => item.type);
-
-  // Extraemos los totales y eliminamos el total
-  const totales = included[selectedContentIndex].attributes.content
-    .filter((item) => item.attributes.composite !== true)
-    .map((item) => item.attributes.total);
-
-  // Extraemos los colores y eliminamos el total
-  const colores = included[selectedContentIndex].attributes.content
-    .filter((item) => item.attributes.composite !== true)
-    .map((item) => item.attributes.color);
-
-  // Construimos el objeto de dataset
-  const dataset = {
-    label: "Balance eléctrico",
-    data: totales,
-    borderColor: colores,
-    backgroundColor: colores,
-  };
-
-  // Le asignamos los datos
-  const chartData = {
-    labels,
-    datasets: [dataset],
-  };
   return (
     <>
-      <Box>
-        <Typography variant="h5" color="initial" mb={2}>
-          Seleccione Tipo de Energia
-        </Typography>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <ButtonGroup
           disableElevation
           variant="contained"
-          aria-label="outlined primary button group"
+          aria-label="Seleccione el tipo de grafica"
+        >
+          {chartsTypes.map((item, index) => (
+            <Button
+              key={index}
+              size="small"
+              onClick={() => setSelectedChartIndex(index)}
+              variant={selectedChartIndex === index ? "contained" : "outlined"}
+            >
+              {item}
+            </Button>
+          ))}
+        </ButtonGroup>
+        <ButtonGroup
+          disableElevation
+          variant="contained"
+          aria-label="Seleccione el tipo de contenido"
         >
           {contents.map((item, index) => (
             <Button
               key={index}
+              size="small"
               onClick={() => setSelectedContentIndex(index)}
               variant={
                 selectedContentIndex === index ? "contained" : "outlined"
@@ -106,41 +91,43 @@ const CustomChart = ({ data }) => {
         {selectedChartIndex !== null && (
           <Box mb={2} minHeight={300}>
             {selectedChartIndex === 0 && (
-              <Bar options={optionsBar} data={chartData} />
+              <Line
+                options={optionsBar}
+                data={dataset(data, selectedContentIndex)}
+              />
             )}
             {selectedChartIndex === 1 && (
-              <Line options={optionsBar} data={chartData} />
+              <Bar
+                options={optionsBar}
+                data={dataset(data, selectedContentIndex)}
+              />
             )}
-            {selectedChartIndex === 2 && (
-              <Doughnut options={optionsDonut} data={chartData} />
+            {/* {selectedChartIndex === 2 && (
+              <Doughnut
+                options={optionsDonut}
+                data={dataset(data, selectedContentIndex)}
+              />
             )}
             {selectedChartIndex === 3 && (
-              <Pie options={optionsDonut} data={chartData} />
+              <Pie
+                options={optionsDonut}
+                data={dataset(data, selectedContentIndex)}
+              />
             )}
             {selectedChartIndex === 4 && (
-              <PolarArea options={options} data={chartData} />
+              <PolarArea
+                options={options}
+                data={dataset(data, selectedContentIndex)}
+              />
             )}
             {selectedChartIndex === 5 && (
-              <Radar options={optionsRadar} data={chartData} />
-            )}
+              <Radar
+                options={optionsRadar}
+                data={dataset(data, selectedContentIndex)}
+              />
+            )} */}
           </Box>
         )}
-        <ButtonGroup
-          disableElevation
-          variant="contained"
-          aria-label="outlined primary button group"
-        >
-          {chartsTypes.map((item, index) => (
-            <Button
-              key={index}
-              onClick={() => setSelectedChartIndex(index)}
-              variant={selectedChartIndex === index ? "contained" : "outlined"}
-              size="small"
-            >
-              {item}
-            </Button>
-          ))}
-        </ButtonGroup>
       </Box>
     </>
   );

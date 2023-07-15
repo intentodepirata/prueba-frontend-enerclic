@@ -15,9 +15,9 @@ const CustomDataGrid = ({ data, cargando }) => {
     return null;
   }
 
-  useEffect(() => {
-    localStorage.setItem("columnConfig", JSON.stringify(columnsUserPreset));
-  }, [columnsUserPreset]);
+  // useEffect(() => {
+  //   localStorage.setItem("columnConfig", JSON.stringify(columnsUserPreset));
+  // }, [columnsUserPreset]);
 
   const handleColumnVisibilityChange = (params) => {
     setColumnsUserPreset({

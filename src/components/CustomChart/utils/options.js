@@ -70,10 +70,10 @@ export const optionsRadar = {
 };
 
 export const chartsTypes = [
-  "Bar",
-  "Line",
-  "Doughnut",
-  "Pie",
-  "PolarArea",
-  "Radar",
+  "Lineas",
+  "Barras",
+  // "Donut",
+  // "Circular",
+  // "PolarArea",
+  // "Radar",
 ];
